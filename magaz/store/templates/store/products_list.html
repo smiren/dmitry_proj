@@ -1,0 +1,58 @@
+{% extends "layout/base.html" %}
+{% load bootstrap4 %}
+{% load thumbnail %}
+
+{% block title %}{{title_name}}{% endblock %}
+
+{% block content %}
+	<h1>{{headline_name}}</h1> 
+	{% bootstrap_messages %}                            
+	{% if products %}
+	<div class="album py-5 bg-light">
+        <div class="container">
+            <div class="row">
+
+		{% for product in products %}
+			<div class="card-group col-md-4">
+            	<div class="card mb-4 shadow p-3 mb-5 bg-white rounded">
+                	<img class="card-img-top" src="{% thumbnail product.image 'main' %}" data-holder-rendered="true">
+                	<div class="card-body">
+                    	<h5 class="card-title">
+                    		{% if product.new %}
+                    			<span class="badge badge-info text-light">New</span>
+                    		{% endif %}
+                    		{{product.name}}
+                    	</h5>
+                    	<h6 class="card-subtitle mb-2 text-muted">
+                    		{{product.category}}
+                    	</h6>
+                  		<p class="card-text">{{ product.description|truncatechars:128 }}</p>
+                  		<form id="PutInCartForm{{product.pk}}" action={% url 'store:put_in_cart' product_slug=product.slug %}>
+                  			<input type="hidden" name="next" value="{{request.path}}{{back_url}}">
+                  		</form>
+                  		<form id="ProductDetailForm{{product.pk}}" action="{{product.get_absolute_url}}">
+                  			<input type="hidden" name="next" value="{{request.path}}{{back_url}}">
+                  		</form>
+                  	</div>
+                  	<div class='card-footer'>
+	                    <div class="d-flex justify-content-between align-items-center">	
+	                    	<div class="btn-group">
+	                        	<button type="submit" class="btn btn-sm btn-outline-success" form="PutInCartForm{{product.pk}}">В корзину</button>
+	                        	<button type="submit" class="btn btn-sm btn-outline-secondary" form="ProductDetailForm{{ product.pk}}">Подробнее...</button>
+	                    	</div>
+	                    	<big >{{product.price}} &#8381</big>
+	                    </div>
+                	</div>
+            	</div>
+            </div>
+		{% endfor %}
+			</div>
+        </div>
+    </div>
+	{% else %}
+		К сожалению ничего не найдено. :(
+	{% endif %}
+	{% if is_paginated %}
+		{% bootstrap_pagination page_obj url=search_url %}	
+	{% endif %}
+{% endblock %}

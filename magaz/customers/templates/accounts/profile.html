@@ -1,0 +1,37 @@
+{% extends "layout/base.html" %}
+{% load main_app_tags %}
+
+{% block title %}Личный кабинет{% endblock %}
+
+{% block content %}
+<h2 class="font-weight-normal">Личный кабинет</h2>
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-3">
+			<ul class="nav nav-pills flex-column">
+				<li class="nav-item">
+					{% url 'customers:profile' as profile_url %}
+					<a class="nav-link {% menu_highlight profile_url %}" href="{{ profile_url }}">Профиль {{user.username}}</a>
+				</li>
+				<li class="nav-item">
+					{% url 'customers:profile_edit' as edit_url %}
+					<a class="nav-link {% menu_highlight edit_url %}" href="{{ edit_url }}">Редактировать профиль</a>
+				</li>
+				<li class="nav-item">
+					{% url 'customers:profile_change'  as change_url %}
+					<a class="nav-link {% menu_highlight change_url %}" href="{{ change_url }}">Сменить пароль</a>
+				</li>
+				<li class="nav-item">
+					{% url 'customers:profile_orders'  as orders_url %}
+					<a class="nav-link {% menu_highlight orders_url %}" href="{{ orders_url }}">Мои заказы</a>
+				</li>
+			</ul>
+		</div>
+		<div class="col">
+			{% block profile %}
+						
+			{% endblock profile %}		
+		</div>
+	</div>
+</div>
+{% endblock %}

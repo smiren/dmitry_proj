@@ -1,0 +1,55 @@
+{% load bootstrap4 %}
+{% load static %}
+{% load main_app_tags %}
+<! DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{% block title %}Главная{% endblock %} - Интернет магазин</title>
+    {% bootstrap_css %}
+    {% bootstrap_javascript jquery='slim' %}
+    <link rel="shortcut icon" type="image/png" href="{% static 'img/favicon.ico' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}"/>
+</head>
+<body class='fluid-container'>
+    {% include 'layout/navbar.html' %}
+    <div class='container'>
+        <nav class="navbar navbar-expand navbar-light bg-light rounded">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle {% menu_highlight '/store/' group_url=True %}" href="#" id="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Каталог товаров</a>
+                        <div class="dropdown-menu" aria-labelledby="dropdown10">
+                            {% url 'store:products_all' as prods_all %}
+                            <a class="dropdown-item {% menu_highlight prods_all%}" href="{{prods_all}}">Все товары</a>
+                            {% url 'store:products_new' as prods_new %}
+                            <a class="dropdown-item {% menu_highlight prods_new%}" href="{{prods_new}}">Новинки</a>
+                            {% for category in categories %}
+                                <a class="dropdown-item {% menu_highlight category.get_absolute_url %}" href="{{category.get_absolute_url}}">{{category}}</a> 
+                            {% endfor %}                       
+                        </div>
+                </li>
+            </ul>
+            <div class="collapse navbar-collapse justify-content-md-center">
+                <ul class="navbar-nav">
+                    {% for i_page in info_pages  %}
+                        <li class="nav-item {% menu_highlight i_page.get_absolute_url %}">
+                            <a class="nav-link" href="{{ i_page.get_absolute_url }}">{{i_page}}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <form class="form-inline my-2" action='{% url 'store:products_search'%}'>
+                {% bootstrap_form search_form layout='inline' %}
+                <button type="submit" class="btn btn-light"><img src="{% static 'img/loopa500.png' %}" width="22" height="22" alt="">&nbsp</button>
+            </form>
+       </nav>
+    {% block content %}
+
+    {% endblock content %}
+    </div>
+</body>
+{% include 'layout/modals.html' %}
+{% include 'layout/footer.html' %}
+</html>

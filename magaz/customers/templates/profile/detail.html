@@ -1,0 +1,29 @@
+{% extends "accounts/profile.html" %}
+{% load bootstrap4 %}
+{% load main_app_tags %}
+
+{% block profile %}
+<h2>Здравствуйте, {{user.username}}</h2>
+{% bootstrap_messages %}
+<h4>Данные вашего профиля:</h4>
+<dl class="row">
+  <dt class="col-sm-3">E-mail:</dt>
+  <dd class="col-sm-9">{{user.email}}</dd>
+
+  <dt class="col-sm-3">Имя:</dt>
+  <dd class="col-sm-9">{{user.first_name|default:'отсутсвует'}}</dd>
+
+  <dt class="col-sm-3">Фамилия:</dt>
+  <dd class="col-sm-9">{{user.last_name|default:'отсутсвует'}}</dd>
+
+  <dt class="col-sm-3">Телефон:</dt>
+  <dd class="col-sm-9">{{user.phone|default:'отсутсвует'|phone }}</dd>
+
+  <dt class="col-sm-3">Адрес доставки:</dt>
+  <dd class="col-sm-9">{{user.address|default:'отсутсвует'}}</dd>
+
+  <dt class="col-sm-3">Дата регистрации:</dt>
+  <dd class="col-sm-9">{{user.date_joined}}</dd>
+
+</dd> 
+{% endblock profile %}

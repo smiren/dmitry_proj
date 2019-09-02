@@ -1,0 +1,16 @@
+{% extends "layout/base.html" %}
+{% load bootstrap4 %}
+
+{% block title %}Оформление заказа{% endblock %}
+
+{% block content %}
+
+<div class="text-center">
+<h1 class="h3 my-4 font-weight-normal">Оформление заказа</h1>
+</div>
+<form method="POST">
+	{% csrf_token %}
+    {% bootstrap_form form layout='horizontal' %}
+    {% bootstrap_button content='Оформить заказ' button_type='submit' button_class='btn-success btn-lg' %}
+</form>
+{% endblock %}

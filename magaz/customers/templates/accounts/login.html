@@ -1,0 +1,22 @@
+{% extends "layout/base.html" %}
+{% load bootstrap4 %}
+
+{% block title %}Авторизация{% endblock %}
+
+
+
+{% block content %}
+
+<div class="text-center">
+<h1 class="h3 mb-3 font-weight-normal">Пожалуйста войдите</h1>
+
+<form class="form-signin" method="POST">
+	{% csrf_token %}
+    {% bootstrap_form login_form layout='inline' %}
+    {% bootstrap_button content='Войти в магазин' button_type='submit' button_class='btn-primary btn-lg btn-block' %}
+    <a class="text-justify" href={% url 'customers:register' %}>Регистрация</a>
+</form>
+</div>
+
+{% endblock %}
+

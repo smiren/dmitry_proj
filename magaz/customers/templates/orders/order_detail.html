@@ -1,0 +1,153 @@
+{% extends "layout/base.html" %}
+{% load bootstrap4 %}
+{% load thumbnail %}
+{% load main_app_tags %}
+
+{% block title %}{{order}}{% endblock %}
+
+{% block content %}
+<div class="container">
+  	<div class="d-flex justify-content-center mt-3">
+  	  <div class="p-2">
+  	  	<h1 class="h3 mb-3 font-weight-normal">{{order}}</h1>
+  	  </div>
+  	  <div class="p-2">
+	    {% if not order.finished %}
+	    	{% if order.status == 'CF' %}
+		  	<span class="badge badge-success">
+		  	{% elif order.status == 'RD' %}
+		  	<span class="badge badge-info">
+		  	{% elif order.status == 'PR' %}
+		  	<span class="badge badge-warning">
+		  	{% else %}
+		  	<span class="badge badge-secondary">
+		  	{% endif %}
+		  	{{order.get_status_display}}</span>
+		  {% else %}
+		    <span class="badge badge-primary">Завершен</span>
+	    {% endif %}
+  	  </div>
+  	</div>
+  <div class="row mb-3">
+  	<div class="col-3">{{order.created|date:'d M Y H:i:s'}}</div>
+  	<div class="col offset-3 text-right">
+  		{% if not order.is_simple %}
+  		Зарегистрирован на пользователя <b>{{order.user.username}}</b>
+  		{% else %}
+  		без регистрации
+  		{% endif %}
+  	</div>
+  </div>
+  {% bootstrap_messages %}
+  <div class="row">
+  	<div class="col pl-0">
+  	  <dl class="dl-horizontal">
+  		<dt class="col-sm-3">Имя</dt>
+  		<dd class="col-sm-9">
+  			{% if order.is_simple %}
+  			{{order.name}}
+  			{% else %}
+  			{{order.user.get_full_name}}
+  			{% endif %}
+  		</dd>
+  	  </dl>
+  	</div>
+  	<div class="col">
+  	  <dl class="dl-horizontal">
+  		<dt class="col-sm-3">Email</dt>
+  		<dd class="col-sm-9">
+  			{% if order.is_simple %}
+  			{{order.email}}
+  			{% else %}
+  			{{order.user.email}}
+  			{% endif %}
+  		</dd>
+  	  </dl>
+  	</div>
+  	<div class="col">
+  	  <dl class="dl-horizontal">
+  		<dt class="col-sm-3">Телефон</dt>
+  		<dd class="col-sm-9">{{order.phone}}</dd>
+  	  </dl>
+  	</div>
+  </div>
+  <div class="row">
+  	<dl class="dl-horizontal">
+  	  <dt class="col">Адрес доставки</dt>
+  	  <dd class="col">{{order.address}}</dd>
+  	</dl>
+  </div>
+  <div class="row">
+	<dl class="dl-horizontal">
+	  <dt class="col">Ваш комментарий</dt>
+	  <dd class="col">{{order.comment}}</dd>
+	</dl>
+  </div>
+  <div class="row mt-3">
+  	<table class="table table-striped">
+  	  <thead>
+    	<tr>
+      	  <th scope="col">#</th>
+      	  <th scope="col">Наименование</th>
+          <th scope="col">Количество</th>
+          <th scope="col">Цена за шт.</th>
+          <th scope="col">Цена общая</th>
+        </tr>
+  	  </thead>
+  	  <tbody>
+  	  	{% for position in positions %}	
+	    <tr>
+	      <th scope="row">{{forloop.counter}}</th>
+	      <td>{{position.product.name}}</td>
+	      <td>{{position.quantity}}&nbsp;шт.</td>
+	      <td>{{position.product.price}}&nbsp;&#8381;</td>
+	      <td>{{position.cost}}&nbsp;&#8381;</td>
+	    </tr>
+  	  	{% endfor %}
+	  </tbody>
+	</table>
+  </div>
+  <div class="row">
+  	<div class="col"><h4>Полная стоимость заказа:</h4></div>
+  	<div class="col text-right">
+  	  <h4>{{order.total_cost}}&nbsp;&#8381;iastr</h4>
+  	</div>
+  </div>
+  {% if comments %}
+  	<div class="row mt-4">
+  		<div class="col"><h5>Комметарии к заказу</h5></div>
+  	</div>
+  {% endif %}
+  {% for comment in comments %}
+  <div class="row my-1">
+  	<div class="col">
+  		<div class="card" style="width: 30rem;">
+  			<div class="card-header">
+  				<div class="d-flex justify-content-between">
+  					<h5 class="card-title">{{comment.person}}</h5>
+  					<span>{{comment.created|date:'d M Y H:i:s'}}</span>
+  				</div>	
+  			</div>
+  			<div class="card-body">
+    			<p class="card-text">{{comment.comment}}</p>
+  			</div>
+		  </div>
+  	</div>	
+  </div> 	
+  {% endfor %}
+  {% if order.is_simple %} 
+  <div class="row my-3">
+  	<div class="col-6">
+  		<input type="text" class="form-control" value="{{request.build_absolute_uri}}" disabled>
+  		<small class="text-muted pl-2">Сохрание url адрес заказа для отслеживания статуса заказа</small>
+  	</div>
+  </div>
+  {% else %}
+  <div class="row my-3">
+    <a href={% url 'customers:profile_orders' %}>
+      <button type="button" class="btn btn-primary">Перейти к моим заказам</button>
+    </a>
+  </div>
+  {% endif %}
+</div>
+{% endblock content %}

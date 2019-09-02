@@ -1,0 +1,113 @@
+{% load bootstrap4 %}
+{% load main_app_tags %}
+{% if user.is_authenticated %}
+<!-- Logout modal window-->
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="logoutModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="logoutModalLabel">Подтверждение выхода</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Вы хотите выйти из магазина?</p>
+        <form id="logoutModalForm" action="{% url 'customers:logout'%}">
+          <input type="hidden" name="next" value="{{request.path}}{{back_url}}">
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+        <button type="submit" class="btn btn-primary" form="logoutModalForm">Выйти</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% else %}
+<!-- Login modal window-->
+<div class="modal fade" id="loginModal" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="loginModalLabel">Авторизация в магазине</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="loginModalForm" method="POST" action={% url 'customers:login' %}>
+            {% csrf_token %}
+            {% bootstrap_form login_form layout='inline' %}
+            <input type="hidden" name="next" value="{{request.path}}{{back_url}}">
+        </form>
+      </div>
+      <div class="modal-footer">
+        <a class="text-justify mr-auto" tabindex="-1" href={% url 'customers:register' %}>Регистрация</a>
+        <button type="button" class="btn btn-secondary" tabindex="-1" data-dismiss="modal">Отмена
+        </button>
+        <button type="submit" class="btn btn-primary" form="loginModalForm">
+        Войти в магазин
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+<!-- Cart modal window-->
+<div class="modal fade" id="CartModal" tabindex="-1" role="dialog" aria-labelledby="CartModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="logoutModalLabel">Корзина покупателя</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <table class="table table-striped table-hover table-sm table-secondary">
+          <thead>
+            <tr class="bg-dark text-light">
+              <th scope="col">#</th>
+              <th scope="col">Название товара</th>
+              <th scope="col">Кол-во</th>
+              <th scope="col">Цена за шт.</th>
+              <th scope="col">Цена всего</th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in cart %}   
+            <tr>
+              <th scope="row">{{forloop.counter}}</th>
+              <td><a href="{{item.url}}?next={{request.path|urlencode}}{{back_url|urlencode}}">{{item.name}}</a></td>
+              <td>{{item.quantity}}</td>
+              <td>{{item.price}}</td>
+              <td>{{item.price|price_pos:item.quantity}}</td>
+              <td class='text-center'>
+                <a href="{% url 'store:remove_cart' product_slug=item.slug %}?next={{request.path|urlencode}}{{back_url|urlencode}}" class="badge badge-pill badge-dark"><small>Удалить</small></a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        <div class='row justify-content-between'>
+          <div class='col-4'>
+            <a href="{% url 'store:clear_cart' %}?next={{request.path|urlencode}}{{back_url|urlencode}}" class="badge badge-pill badge-secondary">Очистить корзину</a>
+          </div>
+          <div class='col-4 text-right'>
+            <b>Итого:&nbsp;</b>{{cart.price}}&nbsp;&#8381;
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <form id="cart" action={% url 'store:cart' %}>
+          <input type="hidden" name="next" value="{{request.path}}{{back_url}}">
+        </form>
+        <button type="submit" class="btn btn-success btn-block" form="cart">Перейти к редактированию и оформлению заказа</button>
+        <button type="button" class="btn btn-primary" tabindex="-1" data-dismiss="modal">Продолжить покупки</button>
+      </div>
+    </div>
+  </div>
+</div>
+

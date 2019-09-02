@@ -1,0 +1,52 @@
+{% extends "accounts/profile.html" %}
+{% load bootstrap4 %}
+
+{% block profile %}
+	{% for order in orders %}	
+		<div class="card sm-12 shadow p-3 mb-5 bg-white rounded">
+		  	<div class="card-header">
+		  		<div class="d-flex justify-content-between">
+		  			<div class="d-flex justify-content-center">
+		  				<div>
+		  					<h5 class="card-title">{{order}}&nbsp;</h5>
+		  				</div>
+		  				<div>
+		  				{% if not order.finished %}
+			    			{% if order.status == 'CF' %}
+				  			<span class="badge badge-success">
+				  			{% elif order.status == 'RD' %}
+				  			<span class="badge badge-info">
+				  			{% elif order.status == 'PR' %}
+				  			<span class="badge badge-warning">
+				  			{% else %}
+				  			<span class="badge badge-secondary">
+				  			{% endif %}
+				  		{{order.get_status_display}}</span>
+				  		{% else %}
+				    	<span class="badge badge-primary">Завершен</span>
+			    		{% endif %}
+			    		</div>
+		  			</div>
+		  			<div>
+		  				<span>{{order.created|date:'d M Y H:i:s'}}</span>
+		  			</div>
+		  		</div>
+		  	</div>
+		  	<div class="card-body">
+		  		<div class="d-flex justify-content-between">
+		  			<div>
+		    			<p class="card-text">Стоимость заказа <b>{{order.total_cost}}&nbsp;&#8381;iastr</b></p>
+		    		</div>
+		    		<div>
+		    			<a href="{{order.get_absolute_url}}">Детали заказа</a>
+		    		</div>
+		    	</div>
+		  	</div>
+		</div>
+	{% endfor %}
+{% if is_paginated %}
+<div class="d-flex justify-content-center">
+    {% bootstrap_pagination page_obj %}  
+</div>
+{% endif %}
+{% endblock profile %}

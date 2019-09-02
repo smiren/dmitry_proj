@@ -1,0 +1,48 @@
+{% load static %}
+{% load main_app_tags %}
+<nav class="navbar navbar-expand navbar-dark bg-dark">
+  <a class="navbar-brand" href={% url 'main:index' %}>
+    <span class='align-middle'>Magazik on Django</span>
+  </a>
+  <div class="collapse navbar-collapse">
+    {% if user.is_authenticated %}
+    <ul class="navbar-nav mr-auto">
+      <span class='navbar-text'></span>
+      <li class="nav-item">
+        {% url 'customers:profile' as profile_url %}
+        <a class="nav-link {% menu_highlight profile_url group_url=True %}" href="{{ profile_url }}">Личный кабинет <b>{{ user.username }}</b></a>
+      </li>
+      <span class='navbar-text'>|</span>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="modal" href='#logoutModal'>Выход</a>
+      </li>
+    {% else %}
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="modal" href="#loginModal">Вход</a>
+      </li>
+      <span class='navbar-text'>|</span>
+      {% url 'customers:register' as reg_url %}
+      <li class="nav-item {% menu_highlight reg_url%}">
+        <a class="nav-link" href="{{reg_url}}">Регистрация</a>
+      </li>
+    {% endif %}
+    </ul>
+    <ul class="navbar-nav ml-auto">
+      {% if  cart|length_is:0 %}
+      <li class="nav-item">
+        <span class="navbar-text" href="#"><img src="{% static 'img/favicon.ico' %}" alt=""> Корзина пуста</span>
+      </li>
+      {% else %}
+      <li class="nav-item">
+        <span class="navbar-text text-light">{{cart.price}} &#8381;iastr<img src="{% static 'img/favicon.ico' %}" alt="">&nbsp;<span class='badge badge-info'>&nbsp;{{cart|length}}&nbsp;</span></span>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="modal" href="#CartModal">Посмотреть корзину</a>
+      </li>      
+      {% endif %}
+
+    </ul>
+    
+  </div>
+</nav>

@@ -1,0 +1,43 @@
+{% extends "layout/base.html" %}
+{% load bootstrap4 %}
+
+{% block title %}Magaz{% endblock %}
+
+{% block content %}
+{% bootstrap_messages %}
+<div class="container">
+	<div class="card-deck mt-5">
+	  <div class="card">
+	    <div class="card-body">
+	      <h4 class="card-title">Каталог всех товаров</h4>
+	      <p class="card-text">Изучайте и выбирайте сразу весь ассортимент магазина.</p>
+	      <a href={% url 'store:products_all' %}><button type="button" class="btn btn-outline-info">SHOP NOW</button></a>
+	    </div>
+	  </div>
+	  <div class="card">
+	    <div class="card-body">
+	      <h4 class="card-title">Каталог новинок</h4>
+	      <p class="card-text">Только самые свежие рыночные новинки!</p>
+	      <a href={% url 'store:products_new' %}><button type="button" class="btn btn-outline-info">SHOP NOW</button></a>
+	    </div>
+	  </div>
+	</div>
+	{% for category in categories %}
+	{% cycle '<div class="card-deck my-4">' '' '' as open_deck silent %}
+	{% cycle '' '' '</div>' as close_deck silent %}
+	{% cycle 'success' 'danger' 'warning' 'primary' as colour silent %}
+	{{open_deck}}
+	  <div class="card">
+	    <div class="card-body">
+	      <h4 class="card-title">{{category.name}}</h4>
+	      <p class="card-text">Товары относящиеся к категории {{category.name}}.</p>
+	      <a href={{category.get_absolute_url}}><button type="button" class="btn btn-outline-{{colour}}">SHOP NOW</button></a>
+	    </div>
+	  </div>
+	{{close_deck}}
+	{% if forloop.last and not close_deck %}
+	</div>
+	{% endif %}
+	{% endfor %}
+</div>
+{% endblock %}

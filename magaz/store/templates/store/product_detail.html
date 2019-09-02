@@ -1,0 +1,58 @@
+{% extends "layout/base.html" %}
+{% load bootstrap4 %}
+{% load thumbnail %}
+{% load main_app_tags %}
+
+{% block title %}{{product.name}}{% endblock %}
+
+{% block content %}
+<div class="container">
+	<h1>{{product.name}}{% if product.new %}&nbsp;<span class="badge badge-info text-light">New</span>{% endif %}</h1>
+	<div class="row">
+		<div class="col-3">
+			<a data-toggle="modal" href='#mainImageModal'>
+			<img class='img-thumbnail' src="{% thumbnail product.image 'main' %}" alt=""></a>
+			<div class="p-2">
+				<form id="PutInCartForm" action={% url 'store:put_in_cart' product_slug=product.slug %}>
+                  	<input type="hidden" name="next" value="{{next_page_url}}">
+					<button type="submit" class="btn btn-success btn-block">Добавить в корзину</button>
+                 </form>
+			</div>
+		</div>
+		<div class="col-9">	
+			{% bootstrap_messages %} 
+			<dl class="dl-horizontal">
+				<dt class="col-3">Категория</dt>
+				<dd class="col-9">{{product.category}}</dd>
+				<dt class="col-3">Стоимость</dt>
+				<dd class="col-9">{{product.price}} &#8381;iastr</dd>
+				<dt class="col-3">Описание</dt>
+				<dd class="col-12">{{product.description}}</dd>
+			</dl>
+		</div>
+	</div>
+	<h4 class="text-muted">Дополнительные изображения:</h4>
+	<div class="d-flex flex-row">
+		{% for img in images %}
+		<div class="p-2">
+			<a data-toggle="modal" href='#extendImageModal{{img.pk}}'>
+				<img class='img-thumbnail' src="{% thumbnail img.image 'small' %}" alt="">	
+			</a>
+		</div>
+		{% endfor %}
+	</div>
+	<div class="p-2">
+		<a href="{{next_page_url}}"><button type="button" class="btn btn-primary">Вернуться назад...</button></a>
+	</div>
+</div>
+<!-- Product images modals begin -->
+{% thumbnail product.image '760x600' crop='smart' as main_img_modal %}
+{% include "store/image_modals.html" with id="mainImageModal" scr=main_img_modal.url name=product.name %}
+{% for img in images %}
+	{% with modal_id="extendImageModal"|addstr:img.pk %}
+		{% thumbnail img.image '760x600' crop='smart' as img_modal %}
+		{% include "store/image_modals.html" with id=modal_id scr=img_modal.url %}
+	{% endwith %}
+{% endfor %}
+<!-- Product images modals ends -->
+{% endblock content %}
