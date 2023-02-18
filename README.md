@@ -1,1 +1,1 @@
-# Test-project for Dmitry
+# Educational E-Shop for Children
