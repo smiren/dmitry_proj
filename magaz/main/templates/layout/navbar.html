@@ -1,8 +1,8 @@
 {% load static %}
 {% load main_app_tags %}
-<nav class="navbar navbar-expand navbar-dark bg-dark">
+<nav class="navbar navbar-expand navbar-dark" style="background-color: #0C4B33;"> <!--style="background-color: #44b78b;">-->
   <a class="navbar-brand" href={% url 'main:index' %}>
-    <span class='align-middle'>Magazik on Django</span>
+    <span class='align-middle'>Django Shop</span>
   </a>
   <div class="collapse navbar-collapse">
     {% if user.is_authenticated %}
@@ -35,7 +35,7 @@
       </li>
       {% else %}
       <li class="nav-item">
-        <span class="navbar-text text-light">{{cart.price}} &#8381;iastr<img src="{% static 'img/favicon.ico' %}" alt="">&nbsp;<span class='badge badge-info'>&nbsp;{{cart|length}}&nbsp;</span></span>
+        <span class="navbar-text text-light">{{cart.price}} &#8381;<img src="{% static 'img/favicon.ico' %}" alt="">&nbsp;<span class='badge badge-info'>&nbsp;{{cart|length}}&nbsp;</span></span>
       </li>
       <li class="nav-item">
         <a class="nav-link" data-toggle="modal" href="#CartModal">Посмотреть корзину</a>
