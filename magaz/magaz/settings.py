@@ -20,18 +20,21 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-with open(os.path.join(BASE_DIR, 'magaz/secret_key'), 'r') as fh: 
+with open(os.path.join(BASE_DIR, 'magaz/secret_key'), 'r') as fh:
     SECRET_KEY = fh.read().strip()
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1',]
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+allowed_host = os.environ.get('ALLOWED_HOST')
+if allowed_host:
+    ALLOWED_HOSTS += [allowed_host]
 
-SECURE_SSL_REDIRECT = True
+SECURE_SSL_REDIRECT = False
 SECURE_REDIRECT_EXEMPT = [r'^(?!accounts/profile).*']
 # Reverse redirect to http, work only if SECURE_SSL_REDIRECT = True
-SECURE_REDIRECT_REVERSE = True
+SECURE_REDIRECT_REVERSE = False
 
 
 # Application definition
@@ -89,7 +92,7 @@ THUMBNAIL_ALIASES = {
     '': {
         'main': {
             'size': (350, 225),
-            'crop': 'scale',
+            'crop': 'smart',
         },
         'small': {
             'size': (200, 120),

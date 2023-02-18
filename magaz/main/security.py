@@ -2,6 +2,7 @@ from django.middleware.security import SecurityMiddleware
 from django.http import HttpResponsePermanentRedirect
 from django.conf import settings
 
+
 class ExtSecurityMiddleware(SecurityMiddleware):
     def __init__(self, get_response=None):
         super().__init__(get_response)
