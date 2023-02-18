@@ -42,12 +42,13 @@ class EditProfileView(SuccessMessageMixin, LoginRequiredMixin,
 			queryset = self.get_queryset()
 		return get_object_or_404(queryset, pk=self.user_id)
 
-class ChangePasswordView(SuccessMessageMixin, LoginRequiredMixin,
-											  PasswordChangeView):
-	template_name = 'profile/edit.html'
-	extra_context = {'headline': 'Сменить пароль'}
-	success_url = reverse_lazy('customers:profile')
-	success_message = 'Пароль %(username)s успешно изменён'
+
+class ChangePasswordView(SuccessMessageMixin, LoginRequiredMixin, PasswordChangeView):
+    template_name = 'profile/edit.html'
+    extra_context = {'headline': 'Сменить пароль'}
+    success_url = reverse_lazy('customers:profile')
+    success_message = 'Пароль успешно изменён'
+
 
 class RegisterUserView(SuccessMessageMixin, CreateView):
 	model = ExtUser
