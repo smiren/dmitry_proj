@@ -3,6 +3,7 @@ from magaz import settings
 
 from decimal import Decimal
 
+
 class Cart(object):
     def __init__(self, request):
         self.session = request.session
@@ -18,7 +19,7 @@ class Cart(object):
             'url': product.get_absolute_url(),
         })
         prod['quantity'] = quantity if update \
-                           else prod.get('quantity', 0) + quantity
+            else prod.get('quantity', 0) + quantity
         self.save()
 
     def remove(self, product):

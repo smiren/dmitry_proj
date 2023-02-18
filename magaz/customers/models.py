@@ -7,18 +7,21 @@ from store.models import Product
 from main.utils import get_random_string
 from magaz import settings
 
+
 class ExtUser(AbstractUser):
     is_activeted = models.BooleanField(default=True, db_index=True,
-        verbose_name='Подтвержден email?',
-        help_text='Отметьте, если пользователь активирован по e-mail.')
+                                       verbose_name='Подтвержден email?',
+                                       help_text='Отметьте, если пользователь активирован по e-mail.')
     phone = models.CharField(max_length=10, blank=True,
-        validators=[validators.RegexValidator(regex='^(|[\d]{10})$')],
-        verbose_name='Номер телефона',
-        help_text="Введите 10 цифр телефонного номера без восьмерки, \
+                             validators=[validators.RegexValidator(
+                                 regex='^(|[\d]{10})$')],
+                             verbose_name='Номер телефона',
+                             help_text="Введите 10 цифр телефонного номера без восьмерки, \
         например 9031234567.")
     address = models.CharField(max_length=200, blank=True,
-        verbose_name='Адрес доставки',
-        help_text='Предпочтительный адрес доставки заказов.')
+                               verbose_name='Адрес доставки',
+                               help_text='Предпочтительный адрес доставки заказов.')
+
 
 class BaseOrder(models.Model):
     STATUSES = (
@@ -29,24 +32,25 @@ class BaseOrder(models.Model):
     )
 
     phone = models.CharField(max_length=10, db_index=True,
-        validators=[validators.RegexValidator(regex='^[\d]{10}$')],
-        verbose_name='Номер телефона',
-        help_text="Введите 10 цифр телефонного номера без восьмерки, \
+                             validators=[validators.RegexValidator(
+                                 regex='^[\d]{10}$')],
+                             verbose_name='Номер телефона',
+                             help_text="Введите 10 цифр телефонного номера без восьмерки, \
         например 9031234567.")
     address = models.CharField(max_length=200, blank=True,
-        verbose_name='Адрес доставки',
-        help_text='Введите адрес доставки заказа.')
+                               verbose_name='Адрес доставки',
+                               help_text='Введите адрес доставки заказа.')
     comment = models.TextField(blank=True, verbose_name='Комментарий к заказу')
     status = models.CharField(max_length=2, choices=STATUSES, default='OP',
-        db_index=True, verbose_name='Статус заказа')
+                              db_index=True, verbose_name='Статус заказа')
     finished = models.BooleanField(default=False, db_index=True,
-        verbose_name='Завершенный заказ')
+                                   verbose_name='Завершенный заказ')
     created = models.DateTimeField(auto_now_add=True, db_index=True)
     products = models.ManyToManyField(Product, through='OrderPosition')
     total_cost = models.DecimalField(max_digits=12, decimal_places=2,
-        default=0, db_index=True)
+                                     default=0, db_index=True)
     slug = models.SlugField(max_length=20, default=get_random_string,
-        db_index=True)
+                            db_index=True)
 
     def get_total_cost(self):
         total_cost = self.positions.aggregate(Sum('cost')).get('cost__sum')
@@ -69,19 +73,21 @@ class BaseOrder(models.Model):
     class Meta:
         verbose_name = 'Заказ(общий)'
         verbose_name_plural = 'Все заказы'
-        ordering =  ['-created']
+        ordering = ['-created']
+
 
 class SimpleOrder(BaseOrder):
     name = models.CharField(max_length=40, blank=True,
-    verbose_name='Ваше имя')
+                            verbose_name='Ваше имя')
     email = models.EmailField(null=True, db_index=True,
-    verbose_name='Адрес эл.почты',
-    help_text='На этот адрес будет выслана информация о заказе.')
+                              verbose_name='Адрес эл.почты',
+                              help_text='На этот адрес будет выслана информация о заказе.')
 
     class Meta:
         verbose_name = 'Заказ без регистрации'
         verbose_name_plural = 'Заказы без регистрации'
-        ordering =  ['-created']
+        ordering = ['-created']
+
 
 class UserOrder(BaseOrder):
     user = models.ForeignKey(ExtUser, on_delete=models.PROTECT)
@@ -89,16 +95,17 @@ class UserOrder(BaseOrder):
     class Meta:
         verbose_name = 'Клиентский заказ'
         verbose_name_plural = 'Клиентские заказы'
-        ordering =  ['-created']
+        ordering = ['-created']
+
 
 class OrderPosition(models.Model):
     product = models.ForeignKey(Product, on_delete=models.PROTECT,
-        verbose_name = "Продукт")
+                                verbose_name="Продукт")
     order = models.ForeignKey(BaseOrder, on_delete=models.CASCADE)
     quantity = models.PositiveSmallIntegerField(default=1,
-        verbose_name = "Количество")
+                                                verbose_name="Количество")
     cost = models.DecimalField(max_digits=10, decimal_places=2,
-        default=0, db_index=True, verbose_name = "Цена")
+                               default=0, db_index=True, verbose_name="Цена")
 
     def __str__(self):
         return f"Позиция {self.product.name}"
@@ -108,9 +115,10 @@ class OrderPosition(models.Model):
         verbose_name = "Позиция заказа"
         verbose_name_plural = "Позиции заказа"
 
+
 class StaffComment(models.Model):
     person = models.ForeignKey(ExtUser, on_delete=models.PROTECT,
-        editable=False, default=settings.DEFAULT_USER_ID)
+                               editable=False, default=settings.DEFAULT_USER_ID)
     order = models.ForeignKey(BaseOrder, on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True, db_index=True)
     comment = models.TextField(verbose_name='Комментарий')

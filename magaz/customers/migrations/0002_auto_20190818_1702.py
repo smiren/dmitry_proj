@@ -13,21 +13,25 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AlterModelOptions(
             name='extuser',
-            options={'verbose_name': 'user', 'verbose_name_plural': 'Зарегистрированные покупатели'},
+            options={'verbose_name': 'user',
+                     'verbose_name_plural': 'Зарегистрированные покупатели'},
         ),
         migrations.AlterField(
             model_name='extuser',
             name='address',
-            field=models.CharField(blank=True, help_text='Предпочтительный адрес доставки заказов.', max_length=200, verbose_name='Адрес доставки'),
+            field=models.CharField(blank=True, help_text='Предпочтительный адрес доставки заказов.',
+                                   max_length=200, verbose_name='Адрес доставки'),
         ),
         migrations.AlterField(
             model_name='extuser',
             name='is_activeted',
-            field=models.BooleanField(db_index=True, default=True, help_text='Отметьте, если пользователь активирован по e-mail.', verbose_name='Подтвержден email?'),
+            field=models.BooleanField(
+                db_index=True, default=True, help_text='Отметьте, если пользователь активирован по e-mail.', verbose_name='Подтвержден email?'),
         ),
         migrations.AlterField(
             model_name='extuser',
             name='phone',
-            field=models.CharField(blank=True, help_text='Введите 10 цифр телефонного номера без восьмерки, например 9031234567.', max_length=10, validators=[django.core.validators.RegexValidator(regex='^(|[\\d]{10})$')], verbose_name='Номер телефона'),
+            field=models.CharField(blank=True, help_text='Введите 10 цифр телефонного номера без восьмерки, например 9031234567.', max_length=10, validators=[
+                                   django.core.validators.RegexValidator(regex='^(|[\\d]{10})$')], verbose_name='Номер телефона'),
         ),
     ]

@@ -17,36 +17,43 @@ class Migration(migrations.Migration):
         ),
         migrations.AlterModelOptions(
             name='orderposition',
-            options={'default_related_name': 'positions', 'verbose_name': 'Позиция заказа', 'verbose_name_plural': 'Позиции заказа'},
+            options={'default_related_name': 'positions',
+                     'verbose_name': 'Позиция заказа', 'verbose_name_plural': 'Позиции заказа'},
         ),
         migrations.AlterModelOptions(
             name='staffcomment',
-            options={'default_related_name': 'staffcomments', 'ordering': ['-created'], 'verbose_name': 'Комментарий персонала', 'verbose_name_plural': 'Комментарии персонала'},
+            options={'default_related_name': 'staffcomments', 'ordering': [
+                '-created'], 'verbose_name': 'Комментарий персонала', 'verbose_name_plural': 'Комментарии персонала'},
         ),
         migrations.AlterField(
             model_name='baseorder',
             name='finished',
-            field=models.BooleanField(db_index=True, default=False, verbose_name='Завершенный заказ'),
+            field=models.BooleanField(
+                db_index=True, default=False, verbose_name='Завершенный заказ'),
         ),
         migrations.AlterField(
             model_name='baseorder',
             name='status',
-            field=models.CharField(choices=[('OP', 'Открыт'), ('CF', 'Подтвержден'), ('RD', 'Выполнен'), ('PR', 'Проблема')], db_index=True, default='OP', max_length=2, verbose_name='Статус заказа'),
+            field=models.CharField(choices=[('OP', 'Открыт'), ('CF', 'Подтвержден'), ('RD', 'Выполнен'), (
+                'PR', 'Проблема')], db_index=True, default='OP', max_length=2, verbose_name='Статус заказа'),
         ),
         migrations.AlterField(
             model_name='orderposition',
             name='cost',
-            field=models.DecimalField(db_index=True, decimal_places=2, default=0, max_digits=10, verbose_name='Цена'),
+            field=models.DecimalField(
+                db_index=True, decimal_places=2, default=0, max_digits=10, verbose_name='Цена'),
         ),
         migrations.AlterField(
             model_name='orderposition',
             name='product',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='positions', to='store.Product', verbose_name='Продукт'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT,
+                                    related_name='positions', to='store.Product', verbose_name='Продукт'),
         ),
         migrations.AlterField(
             model_name='orderposition',
             name='quantity',
-            field=models.PositiveSmallIntegerField(default=1, verbose_name='Количество'),
+            field=models.PositiveSmallIntegerField(
+                default=1, verbose_name='Количество'),
         ),
         migrations.AlterField(
             model_name='staffcomment',

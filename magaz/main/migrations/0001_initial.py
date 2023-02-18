@@ -16,14 +16,21 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='InfoPages',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('title', models.CharField(max_length=50, verbose_name='Заглавие страницы (title)')),
-                ('slug', models.SlugField(max_length=12, unique=True, verbose_name='интернет имя страницы')),
+                ('id', models.AutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
+                ('title', models.CharField(max_length=50,
+                 verbose_name='Заглавие страницы (title)')),
+                ('slug', models.SlugField(max_length=12,
+                 unique=True, verbose_name='интернет имя страницы')),
                 ('menuname', models.CharField(max_length=30)),
-                ('headline', models.CharField(max_length=100, verbose_name='Заголовок страницы (h1)')),
-                ('head_text', models.TextField(blank=True, verbose_name='Текст под заголовком страницы')),
-                ('content_text', models.TextField(blank=True, verbose_name='Основной текст страницы')),
-                ('image_quantity', models.PositiveSmallIntegerField(default=0, editable=False)),
+                ('headline', models.CharField(max_length=100,
+                 verbose_name='Заголовок страницы (h1)')),
+                ('head_text', models.TextField(blank=True,
+                 verbose_name='Текст под заголовком страницы')),
+                ('content_text', models.TextField(
+                    blank=True, verbose_name='Основной текст страницы')),
+                ('image_quantity', models.PositiveSmallIntegerField(
+                    default=0, editable=False)),
             ],
             options={
                 'verbose_name': 'Информационная сраница',
@@ -33,11 +40,16 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='InfoPageImages',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('image', models.ImageField(upload_to=main.models.get_upload_image_path, verbose_name='Изображение')),
-                ('imagename', models.CharField(blank=True, max_length=100, verbose_name='Название изображения')),
-                ('imagedesc', models.TextField(blank=True, verbose_name='Описание изображения')),
-                ('pagename', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='images', to='main.InfoPages', verbose_name='Инфо-страница')),
+                ('id', models.AutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
+                ('image', models.ImageField(
+                    upload_to=main.models.get_upload_image_path, verbose_name='Изображение')),
+                ('imagename', models.CharField(blank=True,
+                 max_length=100, verbose_name='Название изображения')),
+                ('imagedesc', models.TextField(
+                    blank=True, verbose_name='Описание изображения')),
+                ('pagename', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                 related_name='images', to='main.InfoPages', verbose_name='Инфо-страница')),
             ],
             options={
                 'verbose_name': 'Изображение для инфо-страницы',

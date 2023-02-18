@@ -16,10 +16,14 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Category',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=25, verbose_name='Название категории')),
-                ('slug', models.SlugField(max_length=25, unique=True, verbose_name='Интернет имя категории(slug)')),
-                ('order', models.PositiveSmallIntegerField(default=0, help_text='Установите порядок сортировки от меньшего к большему', verbose_name='Порядок сортитовки')),
+                ('id', models.AutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
+                ('name', models.CharField(max_length=25,
+                 verbose_name='Название категории')),
+                ('slug', models.SlugField(max_length=25, unique=True,
+                 verbose_name='Интернет имя категории(slug)')),
+                ('order', models.PositiveSmallIntegerField(
+                    default=0, help_text='Установите порядок сортировки от меньшего к большему', verbose_name='Порядок сортитовки')),
             ],
             options={
                 'verbose_name': 'Категория товаров',
@@ -30,17 +34,27 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Product',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=40, verbose_name='Название товара')),
-                ('slug', models.SlugField(max_length=40, unique=True, verbose_name='Интернет имя товара(slug)')),
-                ('description', models.TextField(blank=True, verbose_name='Описание товара')),
-                ('image', models.ImageField(blank=True, upload_to=store.models.get_product_main_image_path, verbose_name='Основное изображение')),
-                ('price', models.DecimalField(decimal_places=2, default=0, max_digits=10, verbose_name='Цена')),
-                ('avaible', models.BooleanField(db_index=True, default=True, verbose_name='Товар доступен к продаже')),
-                ('new', models.BooleanField(db_index=True, default=False, verbose_name='Новинка')),
+                ('id', models.AutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
+                ('name', models.CharField(
+                    max_length=40, verbose_name='Название товара')),
+                ('slug', models.SlugField(max_length=40, unique=True,
+                 verbose_name='Интернет имя товара(slug)')),
+                ('description', models.TextField(
+                    blank=True, verbose_name='Описание товара')),
+                ('image', models.ImageField(
+                    blank=True, upload_to=store.models.get_product_main_image_path, verbose_name='Основное изображение')),
+                ('price', models.DecimalField(decimal_places=2,
+                 default=0, max_digits=10, verbose_name='Цена')),
+                ('avaible', models.BooleanField(db_index=True,
+                 default=True, verbose_name='Товар доступен к продаже')),
+                ('new', models.BooleanField(db_index=True,
+                 default=False, verbose_name='Новинка')),
                 ('added', models.DateTimeField(auto_now_add=True, db_index=True)),
-                ('image_quantity', models.PositiveSmallIntegerField(default=1, editable=False)),
-                ('category', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='products', to='store.Category', verbose_name='Категория товаров')),
+                ('image_quantity', models.PositiveSmallIntegerField(
+                    default=1, editable=False)),
+                ('category', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT,
+                 related_name='products', to='store.Category', verbose_name='Категория товаров')),
             ],
             options={
                 'verbose_name': 'Товар',
@@ -53,9 +67,12 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='ProductExtraImage',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('image', models.ImageField(upload_to=store.models.get_extra_image_path, verbose_name='Изображение')),
-                ('product', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='images', to='store.Product', verbose_name='Товар')),
+                ('id', models.AutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
+                ('image', models.ImageField(
+                    upload_to=store.models.get_extra_image_path, verbose_name='Изображение')),
+                ('product', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                 related_name='images', to='store.Product', verbose_name='Товар')),
             ],
             options={
                 'verbose_name': 'Дополнительное изображение товара',

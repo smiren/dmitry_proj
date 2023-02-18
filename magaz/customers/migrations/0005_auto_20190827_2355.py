@@ -17,16 +17,19 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='baseorder',
             name='comment',
-            field=models.TextField(blank=True, verbose_name='Комментарий к заказу'),
+            field=models.TextField(
+                blank=True, verbose_name='Комментарий к заказу'),
         ),
         migrations.AlterField(
             model_name='simpleorder',
             name='email',
-            field=models.EmailField(db_index=True, help_text='На этот адрес будет выслана информация о заказе.', max_length=254, null=True, verbose_name='Адрес эл.почты'),
+            field=models.EmailField(db_index=True, help_text='На этот адрес будет выслана информация о заказе.',
+                                    max_length=254, null=True, verbose_name='Адрес эл.почты'),
         ),
         migrations.AlterField(
             model_name='simpleorder',
             name='name',
-            field=models.CharField(blank=True, max_length=40, verbose_name='Ваше имя'),
+            field=models.CharField(
+                blank=True, max_length=40, verbose_name='Ваше имя'),
         ),
     ]

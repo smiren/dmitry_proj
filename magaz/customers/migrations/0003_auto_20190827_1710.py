@@ -17,14 +17,19 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='BaseOrder',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('phone', models.CharField(db_index=True, help_text='Введите 10 цифр телефонного номера без восьмерки,         например 9031234567.', max_length=10, validators=[django.core.validators.RegexValidator(regex='^[\\d]{10}$')], verbose_name='Номер телефона')),
-                ('address', models.CharField(blank=True, help_text='Введите адрес доставки заказа.', max_length=200, verbose_name='Адрес доставки')),
+                ('id', models.AutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
+                ('phone', models.CharField(db_index=True, help_text='Введите 10 цифр телефонного номера без восьмерки,         например 9031234567.',
+                 max_length=10, validators=[django.core.validators.RegexValidator(regex='^[\\d]{10}$')], verbose_name='Номер телефона')),
+                ('address', models.CharField(blank=True, help_text='Введите адрес доставки заказа.',
+                 max_length=200, verbose_name='Адрес доставки')),
                 ('Комментарий к заказу', models.TextField(blank=True)),
-                ('status', models.CharField(choices=[('OP', 'Открыт'), ('CF', 'Подтвержден'), ('RD', 'Выполнен'), ('PR', 'Проблема')], db_index=True, default='OP', max_length=2)),
+                ('status', models.CharField(choices=[('OP', 'Открыт'), ('CF', 'Подтвержден'), (
+                    'RD', 'Выполнен'), ('PR', 'Проблема')], db_index=True, default='OP', max_length=2)),
                 ('finished', models.BooleanField(db_index=True, default=False)),
                 ('created', models.DateTimeField(auto_now_add=True, db_index=True)),
-                ('total_cost', models.DecimalField(db_index=True, decimal_places=2, default=0, max_digits=12)),
+                ('total_cost', models.DecimalField(db_index=True,
+                 decimal_places=2, default=0, max_digits=12)),
             ],
             options={
                 'verbose_name': 'Заказ(общий)',
@@ -35,12 +40,14 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='extuser',
             name='phone',
-            field=models.CharField(blank=True, help_text='Введите 10 цифр телефонного номера без восьмерки,         например 9031234567.', max_length=10, validators=[django.core.validators.RegexValidator(regex='^(|[\\d]{10})$')], verbose_name='Номер телефона'),
+            field=models.CharField(blank=True, help_text='Введите 10 цифр телефонного номера без восьмерки,         например 9031234567.', max_length=10, validators=[
+                                   django.core.validators.RegexValidator(regex='^(|[\\d]{10})$')], verbose_name='Номер телефона'),
         ),
         migrations.CreateModel(
             name='SimpleOrder',
             fields=[
-                ('baseorder_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='customers.BaseOrder')),
+                ('baseorder_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE,
+                 parent_link=True, primary_key=True, serialize=False, to='customers.BaseOrder')),
                 ('name', models.CharField(blank=True, max_length=40)),
                 ('email', models.EmailField(db_index=True, max_length=254, null=True)),
             ],
@@ -54,11 +61,14 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='StaffComment',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('created', models.DateTimeField(auto_now_add=True, db_index=True)),
                 ('comment', models.TextField(verbose_name='Комментарий:')),
-                ('order', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='staffcomments', to='customers.BaseOrder')),
-                ('person', models.ForeignKey(editable=False, on_delete=django.db.models.deletion.PROTECT, related_name='staffcomments', to=settings.AUTH_USER_MODEL)),
+                ('order', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                 related_name='staffcomments', to='customers.BaseOrder')),
+                ('person', models.ForeignKey(editable=False, on_delete=django.db.models.deletion.PROTECT,
+                 related_name='staffcomments', to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'ordering': ['-created'],
@@ -68,11 +78,15 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='OrderPosition',
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('quantity', models.PositiveSmallIntegerField(default=1)),
-                ('cost', models.DecimalField(db_index=True, decimal_places=2, default=0, max_digits=10)),
-                ('order', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='positions', to='customers.BaseOrder')),
-                ('product', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='positions', to='store.Product')),
+                ('cost', models.DecimalField(db_index=True,
+                 decimal_places=2, default=0, max_digits=10)),
+                ('order', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                 related_name='positions', to='customers.BaseOrder')),
+                ('product', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT,
+                 related_name='positions', to='store.Product')),
             ],
             options={
                 'default_related_name': 'positions',
@@ -81,13 +95,16 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='baseorder',
             name='products',
-            field=models.ManyToManyField(through='customers.OrderPosition', to='store.Product'),
+            field=models.ManyToManyField(
+                through='customers.OrderPosition', to='store.Product'),
         ),
         migrations.CreateModel(
             name='UserOrder',
             fields=[
-                ('baseorder_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='customers.BaseOrder')),
-                ('user', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to=settings.AUTH_USER_MODEL)),
+                ('baseorder_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE,
+                 parent_link=True, primary_key=True, serialize=False, to='customers.BaseOrder')),
+                ('user', models.ForeignKey(
+                    on_delete=django.db.models.deletion.PROTECT, to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'verbose_name': 'Клиентский заказ',

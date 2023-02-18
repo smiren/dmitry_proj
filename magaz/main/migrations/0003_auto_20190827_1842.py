@@ -14,6 +14,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='infopageimages',
             name='image',
-            field=models.ImageField(upload_to=main.utils.get_infopage_image_path, verbose_name='Изображение'),
+            field=models.ImageField(
+                upload_to=main.utils.get_infopage_image_path, verbose_name='Изображение'),
         ),
     ]

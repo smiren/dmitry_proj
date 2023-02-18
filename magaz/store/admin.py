@@ -1,6 +1,7 @@
 from django.contrib import admin
 from .models import Category, Product, ProductExtraImage
 
+
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ['name', 'slug', 'order', 'product_count']
@@ -15,6 +16,7 @@ class CategoryAdmin(admin.ModelAdmin):
 
 class ProductExtraImageInline(admin.TabularInline):
     model = ProductExtraImage
+
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):

@@ -15,6 +15,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='staffcomment',
             name='person',
-            field=models.ForeignKey(default=14, editable=False, on_delete=django.db.models.deletion.PROTECT, related_name='staffcomments', to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(default=14, editable=False, on_delete=django.db.models.deletion.PROTECT,
+                                    related_name='staffcomments', to=settings.AUTH_USER_MODEL),
         ),
     ]

@@ -13,16 +13,19 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='infopages',
             name='content_text',
-            field=models.TextField(blank=True, help_text='Данное поле заполняется в HTML разметке', verbose_name='Основной текст страницы'),
+            field=models.TextField(
+                blank=True, help_text='Данное поле заполняется в HTML разметке', verbose_name='Основной текст страницы'),
         ),
         migrations.AlterField(
             model_name='infopages',
             name='menuname',
-            field=models.CharField(max_length=30, verbose_name='Имя страницы в нав-меню'),
+            field=models.CharField(
+                max_length=30, verbose_name='Имя страницы в нав-меню'),
         ),
         migrations.AlterField(
             model_name='infopages',
             name='slug',
-            field=models.SlugField(max_length=12, unique=True, verbose_name='интернет имя страницы (slug)'),
+            field=models.SlugField(
+                max_length=12, unique=True, verbose_name='интернет имя страницы (slug)'),
         ),
     ]

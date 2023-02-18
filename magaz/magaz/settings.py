@@ -160,7 +160,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # Session
 
 SESSION_FILE_PATH = os.path.join(BASE_DIR, '_sessions')
-SESSION_CART_NAME = 'cart' #Magaz config
+SESSION_CART_NAME = 'cart'  # Magaz config
 
 # Default Staff person for staff comments
 

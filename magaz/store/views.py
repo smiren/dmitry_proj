@@ -10,6 +10,7 @@ from django.http import HttpResponseRedirect
 from .models import Product, Category
 from .cart import Cart
 
+
 class ProductsListView(ListView):
     template_name = 'store/products_list.html'
     context_object_name = 'products'
@@ -21,6 +22,7 @@ class ProductsListView(ListView):
         'headline_name': 'Каталог всех товаров',
     }
 
+
 class ProductsNewListView(ProductsListView):
     extra_context = {
         'title_name': 'Каталог новинок',
@@ -30,6 +32,7 @@ class ProductsNewListView(ProductsListView):
     def get_queryset(self):
         return super().get_queryset().filter(new=True)
 
+
 class ProductsListByCategoryView(ProductsListView):
 
     def get_queryset(self):
@@ -37,7 +40,7 @@ class ProductsListByCategoryView(ProductsListView):
         if slug:
             return get_list_or_404(super().get_queryset(), category__slug=slug)
 
-    def get_context_data(self,**kwargs):
+    def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         category = Category.objects.get(slug=self.kwargs['category_slug'])
         context.update({
@@ -46,13 +49,14 @@ class ProductsListByCategoryView(ProductsListView):
         })
         return context
 
+
 class ProductsSearchListView(ProductsListView):
 
     def get_queryset(self):
         keyword = self.request.GET['search']
         kw_for_category = keyword.lower().capitalize()
         q = Q(name__icontains=keyword) | Q(description__icontains=keyword) \
-        | Q(category__name__istartswith=kw_for_category)
+            | Q(category__name__istartswith=kw_for_category)
         return super().get_queryset().filter(q) if keyword else []
 
     def get_context_data(self, **kwargs):
@@ -63,6 +67,7 @@ class ProductsSearchListView(ProductsListView):
             'headline_name': f'Поиск товаров по словосочетанию "{keyword}"',
         })
         return context
+
 
 class ProductDetailView(SuccessURLAllowedHostsMixin, DetailView):
     model = Product
@@ -89,8 +94,10 @@ class ProductDetailView(SuccessURLAllowedHostsMixin, DetailView):
             context['images'] = self.object.images.all()
         return context
 
+
 class CartView(TemplateView):
     template_name = 'store/cart.html'
+
 
 class PutInCartView(SingleObjectMixin, LogoutView):
     """
@@ -110,7 +117,7 @@ class PutInCartView(SingleObjectMixin, LogoutView):
         self.cart_action()
         next_page = self.get_next_page()
         return HttpResponseRedirect(next_page) if next_page \
-               else super().dispatch(request, *args, **kwargs)
+            else super().dispatch(request, *args, **kwargs)
 
     def cart_action(self):
         product = self.get_object()
@@ -128,11 +135,13 @@ class PutInCartView(SingleObjectMixin, LogoutView):
             messages.success(self.request, f"\"{product.name}\" \
             добавлен в корзину")
 
+
 class ClearCartView(PutInCartView):
 
     def cart_action(self):
         self.cart.clear()
         messages.success(self.request, "Корзина очищена")
+
 
 class RemoveItemCartView(PutInCartView):
 
