@@ -1,10 +1,13 @@
 {% load static %}
 {% load main_app_tags %}
-<nav class="navbar navbar-expand navbar-dark" style="background-color: #0C4B33;"> <!--style="background-color: #44b78b;">-->
+<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #0C4B33;"> <!--style="background-color: #44b78b;">-->
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navBarId" aria-controls="navBarId" aria-expanded="false" aria-label="Toggle navigation">
+  <span class="navbar-toggler-icon"></span>
+  </button>
   <a class="navbar-brand" href={% url 'main:index' %}>
     <span class='align-middle'>Django Shop</span>
   </a>
-  <div class="collapse navbar-collapse">
+  <div class="collapse navbar-collapse" id="navBarId">
     {% if user.is_authenticated %}
     <ul class="navbar-nav mr-auto">
       <span class='navbar-text'></span>
@@ -21,13 +24,13 @@
       <li class="nav-item">
         <a class="nav-link" data-toggle="modal" href="#loginModal">Вход</a>
       </li>
-      <span class='navbar-text'>|</span>
       {% url 'customers:register' as reg_url %}
       <li class="nav-item {% menu_highlight reg_url%}">
         <a class="nav-link" href="{{reg_url}}">Регистрация</a>
       </li>
     {% endif %}
     </ul>
+  </div>
     <ul class="navbar-nav ml-auto">
       {% if  cart|length_is:0 %}
       <li class="nav-item">
@@ -39,10 +42,7 @@
       </li>
       <li class="nav-item">
         <a class="nav-link" data-toggle="modal" href="#CartModal">Посмотреть корзину</a>
-      </li>      
+      </li>
       {% endif %}
-
     </ul>
-    
-  </div>
 </nav>
